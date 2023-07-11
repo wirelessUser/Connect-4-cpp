@@ -77,12 +77,11 @@ class ConnectFourGame {
 			//checking Column Wise   winner 
 	for(int i=0;i<cols-1;i++){
 			for(int j=rows-1;j>rows-4;j--){
-				cout<<"checking column wise "<<i<<"_"<<j;
-				cout<<endl;
+
 		if((board[i][j]!=empty_Slot)==true){
-		cout<<"board[i][j]=="<<board[i][j]<<"i="<<i<<"j="<<"-"<<j<<endl;
+		
 		if( board[i][j]==board[i-1][j] && board[i][j]==board[i-2][j] && board[i][j]==board[i-3][j]  ){
-			cout<<"Inside inner for of column winner"<<endl;
+		
 		return true;	
 		}
 		}//outer if..
@@ -92,17 +91,19 @@ class ConnectFourGame {
 			//checking Row Wise   winner 
 		for(int i=rows-1;i>=0;i--){
 			for(int j=0;j<4;j++){
-				cout<<"checking rowseise "<<i<<"_"<<j;
-				cout<<endl;
+
 		if((board[i][j]!=empty_Slot)==true){
-		cout<<"board[i][j]=="<<board[i][j]<<"i="<<i<<"j="<<"-"<<j<<endl;
+		
 		if( board[i][j]==board[i][j+1] && board[i][j]==board[i][j+2] && board[i][j]==board[i][j+3]  ){
-			cout<<"Inside inner for"<<endl;
-		return true;	
+		
+	    	return true;	
 		}
 		}//outer if..
 	         }
 		}///.....
+		
+		
+		
 		
 	 // Check for diagonal win (top-left to bottom-right)
                 //    int i=0,j=0;
