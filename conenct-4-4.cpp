@@ -49,7 +49,7 @@ class ConnectFourGame {
 		  		
 		 }//.....
 		  
-		  if(isBoardFull()){
+		  if(isBoardFull()==true){
 		cout<<"No one is winenr"<<endl;
 	     break;
 	}//
@@ -106,20 +106,20 @@ class ConnectFourGame {
 		
 		
 	 // Check for diagonal win (top-left to bottom-right)
-                //    int i=0,j=0;
-              // if (board[i][j] != empty_Slot && board[i][j] == board[i + 1][j + 1] && board[i][j] == board[i + 2][j + 2] && board[i][j] == board[i + 3][j + 3]&&
-			//	board[i][j] == board[i + 4][j + 4] && board[i][j] == board[i + 5][j + 5])
-              //  {
-              //    return true;
-              // }
+                  int i=0,j=0;
+             if (board[i][j] != empty_Slot && board[i][j] == board[i + 1][j + 1] && board[i][j] == board[i + 2][j + 2] && board[i][j] == board[i + 3][j + 3]&&
+				board[i][j] == board[i + 4][j + 4] && board[i][j] == board[i + 5][j + 5])
+                {
+                  return true;
+              }
         
 
         //  Check for diagonal win (bottom-left to top-right)
        
-            //   if (board[i][j] != empty_Slot && board[i][j] == board[i - 1][j + 1] && board[i][j] == board[i - 2][j + 2] && board[i][j] == board[i - 3][j + 3])
-            //   {
-             //    return true;
-              //  }
+              if (board[i][j] != empty_Slot && board[i][j] == board[i - 1][j + 1] && board[i][j] == board[i - 2][j + 2] && board[i][j] == board[i - 3][j + 3])
+              {
+                return true;
+              }
        
         return false;
 	}// check winner....
@@ -182,10 +182,12 @@ class ConnectFourGame {
 
 		
 	bool isBoardFull(){
+		
 		for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-           if(board[i][j]!=empty_Slot){
+           if(board[i][j]==empty_Slot){
            	return false;
+           	break;
 		   }
         }
         }
