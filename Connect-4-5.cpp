@@ -35,22 +35,28 @@ class ConnectFourGame {
 class WinnerChecker{
 	
 	char empty_Slot=' ';
+	
+		ConnectFourGame connect4;
 	public: 
 	
-	bool CheckWinner(ConnectFourGame& connect4){
+
+	
+	WinnerChecker(ConnectFourGame  _connect4) : connect4(_connect4)  
+	{
+	
+	}
+	
+	bool CheckWinner(){
 		
 		
-	      // return false;
-			
-		return	CheckWinnerHorizontally(connect4);
-		return	CheckWinnerVertically(connect4);
-		return	CheckWinnerDiaognallyLeft(connect4);
-		return	CheckWinnerDiaognallyRight(connect4);
+	     
+	      
+	      return 	CheckWinnerHorizontally()||	CheckWinnerVertically()||	CheckWinnerDiaognallyLeft()|| CheckWinnerDiaognallyRight();
 		}
 		
 		
 		
-      bool CheckWinnerHorizontally(ConnectFourGame& connect4){
+      bool CheckWinnerHorizontally(){
       	
       	
       	for(int i=connect4.rows-1;i>=0;i--){
@@ -66,7 +72,7 @@ class WinnerChecker{
 	  }//CheckWinnerHorizontally.
 	  
 	  
-	  bool CheckWinnerVertically(ConnectFourGame& connect4){
+	  bool CheckWinnerVertically(){
       		for(int j=0;j<connect4.cols;j++){
       	for(int i=connect4.rows-1;i>=connect4.rows-3;i--){
       			if( connect4.board[i][j] != connect4.empty_Slot &&       connect4.board[i][j]==connect4.board[i-1][j]   &&connect4.board[i][j]==connect4.board[i-2][j] 
@@ -79,7 +85,7 @@ class WinnerChecker{
 		  return false;
 	  }//CheckWinnerVertically..
 	  
-	  bool CheckWinnerDiaognallyLeft(ConnectFourGame& connect4){
+	  bool CheckWinnerDiaognallyLeft(){
       	 // Check for diagonal win (top-left to bottom-right)
                   int i=0,j=0;
              if (connect4.board[i][j] != empty_Slot && connect4.board[i][j] == connect4.board[i + 1][j + 1] && connect4.board[i][j] == connect4.board[i + 2][j + 2] && connect4.board[i][j] == connect4.board[i + 3][j + 3]&&
@@ -90,7 +96,7 @@ class WinnerChecker{
 	  }//CheckWinnerDiaognallyLeft..
 	  
 	  
-	  bool CheckWinnerDiaognallyRight(ConnectFourGame& connect4){
+	  bool CheckWinnerDiaognallyRight(){
       	  //  Check for diagonal win (bottom-left to top-right)
         int i=0,j=0;
               if (connect4.board[i][j] != empty_Slot && connect4.board[i][j] == connect4.board[i - 1][j + 1] && connect4.board[i][j] == connect4.board[i - 2][j + 2] && connect4.board[i][j] == connect4.board[i - 3][j + 3])
@@ -112,8 +118,13 @@ class  Input{
 		int x;
 		 int y;	
 		
-	public:
+		ConnectFourGame* boardObj;
 		
+		
+	public:
+		Input(ConnectFourGame& _boardObj){
+			boardObj= &_boardObj;
+		}
 		bool CheckRightInput(int rows, int cols){
 			
 				if(x<rows&& x>=0 && y<cols&& y>=0  ){
@@ -130,8 +141,8 @@ class  Input{
   
 
 	///*
-		void TakeInput(ConnectFourGame& boardObj,char currentPlayer){
-				vector< vector<char> > board= boardObj.board;
+		void TakeInput(char currentPlayer){
+			
 				
 	         while(true){
 	         	
@@ -144,15 +155,15 @@ class  Input{
 		 		cin>>y;
 		 		
 		 	
-		 				bool correct= CheckRightInput(boardObj.rows,boardObj.cols);
+		 				bool correct= CheckRightInput(boardObj->rows,boardObj->cols);
 						 
 						 if(correct==true){
-						 		for(int i=boardObj.rows-1; i>=0;i--){
+						 		for(int i=boardObj->rows-1; i>=0;i--){
 						 		//	for(int j=0; j<boardObj.cols;j++){
 						 					 cout<<" i== "<<i<<" And y=="<<y<<" And x=="<<x<<endl;
 									      if(x==i  ){
-									       	if(boardObj.board[x][y] == boardObj.empty_Slot){
-									       		boardObj.board[i][y]= currentPlayer;
+									       	if(boardObj->board[x][y] == boardObj->empty_Slot){
+									       		boardObj->board[i][y]= currentPlayer;
 									       		cout<<"currentPlayer from LOOP :"<<currentPlayer<<endl;
 		 				                 	 return;
 											   }else{
@@ -181,23 +192,26 @@ class  Input{
 
 class MakeBoard{
 	
-	
+	ConnectFourGame* connect4;
 	public:
 	
+	MakeBoard(ConnectFourGame &_connect4){
+		connect4=&_connect4;
+	}
 	
-	 void CreateBoard(ConnectFourGame& connect4) {
-        vector<vector<char> >& board = connect4.board;
+	 void CreateBoard() {
+       
 
-        for (int i = 0; i < connect4.rows; i++) {
-            for (int j = 0; j < connect4.cols; j++) {
+        for (int i = 0; i < connect4->rows; i++) {
+            for (int j = 0; j < connect4->cols; j++) {
                 cout << "|";
 
-                if (j != connect4.cols) {
+                if (j != connect4->cols) {
                     cout << "__";
                 }
 
-                if (board[i][j] != connect4.empty_Slot) {
-                    cout << board[i][j];
+                if (connect4->board[i][j] != connect4->empty_Slot) {
+                    cout << connect4->board[i][j];
                 } else {
                     cout << ' ';
                 }
@@ -211,16 +225,34 @@ class MakeBoard{
 
 
 
-class GameManger{
+class GameManager{
 	
-	public:
+
 		char Red_player='R';
 		char Blue_player='B';
 		
 		char currentPlayer ='R';
 		
-	Input  inputObj;
+     	Input  inputObj;
+	
+	     WinnerChecker* checkWinner ;  
+	     MakeBoard* boardObj;
+	     ConnectFourGame* connect4;
+	       
+	       
+	       
+		public:	
 		
+	GameManager(WinnerChecker &_checkWinner ,MakeBoard &_boardObj,ConnectFourGame& _connect4 ) :inputObj (_connect4)
+	
+   {
+   	
+	   checkWinner = &_checkWinner;
+	   
+	    boardObj=&_boardObj;
+	    connect4= &_connect4;
+   	}
+
 		void PlayerChnage(){
 			if(currentPlayer==Red_player){
 				currentPlayer=Blue_player;
@@ -230,19 +262,17 @@ class GameManger{
 		}//PlayerChnage..
 		
 	
-	bool isBoardFull(ConnectFourGame& _board){
-		vector< vector<char> > &board= _board.board;
-			for(int i=_board.rows-1; i>=0;i--){
+	bool isBoardFull(){
+
+			for(int i=connect4->rows-1; i>=0;i--){
 				
-				for(int j=0; j<_board.cols;j++){
+				for(int j=0; j<connect4->cols;j++){
 					
-					if(board[i][j]==' '){
+					if(connect4->board[i][j]==' '){
 						return false;
 						
 					}	
-				}
-				
-				
+				}	
 		 		                
          }//outer for..
 		
@@ -250,23 +280,23 @@ class GameManger{
 	}//isBoardFull
 		
 		
-			void PlayGame(MakeBoard& boardObj,ConnectFourGame& connect4,WinnerChecker checkWinner){
+			void PlayGame(){
 		 		 	
 		 	while(true){
 		 		
 		 		cout<<"  player is "<<"->"<<currentPlayer<<endl;
-		 		boardObj.CreateBoard(connect4);
+		 		boardObj->CreateBoard();
 		 		
 		 		// Taking input...
-		 		inputObj.TakeInput(connect4,currentPlayer);
+		 		inputObj.TakeInput(currentPlayer);
 		 		
-		 		if(checkWinner.CheckWinner(connect4)==true){
+		 		if(checkWinner->CheckWinner()==true){
 		 			cout<<"Winner is "<<currentPlayer<<endl;
 					 
 					 break;
 				 }
 				 
-				 if(isBoardFull(connect4)){
+				 if(isBoardFull()){
 				 	cout<<"No one win"<<endl;
 				 	break;
 				 }
@@ -291,25 +321,21 @@ class GameManger{
 
 int main() {
    
-   int rows=6,cols=7;
-ConnectFourGame   obj(rows,cols);
-
-MakeBoard  makeBoard;
-
-
-    WinnerChecker  winnerChecker;
-    GameManger  gameManager;
+   int const  rows=6,cols=7;
+ConnectFourGame   connectFourObj(rows,cols);
+MakeBoard  makeBoard(connectFourObj);
+    WinnerChecker  winnerChecker(connectFourObj);
+    GameManager  gameManager(winnerChecker,makeBoard,connectFourObj);
 
 
 
-    gameManager.PlayGame(makeBoard,obj,winnerChecker);
+    gameManager.PlayGame();
 
 
 
 
 
 }
-
 
 
 
